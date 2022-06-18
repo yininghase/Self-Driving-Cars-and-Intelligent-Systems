@@ -1,0 +1,9 @@
+[submodule "project_multi-vehicle_control/MotionPlanning"]
+	path = project_multi-vehicle_control/MotionPlanning
+	url = https://github.com/zhm-real/MotionPlanning
+[submodule "project_multi-vehicle_control/week1/mpc-course-assignments"]
+	path = project_multi-vehicle_control/week1/mpc-course-assignments
+	url = https://github.com/WuStangDan/mpc-course-assignments
+[submodule "yining-intellisys-ss2022"]
+	path = yining-intellisys-ss2022
+	url = https://gitlab.vision.in.tum.de/s0093/yining-intellisys-ss2022
