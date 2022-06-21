@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.patches as mpatches
 from scipy.optimize import minimize
 import time
-
+import os
 
 def sim_run(options, simulation_options, MPC, save=False, name=None, show=True):
     start = time.process_time()
@@ -207,6 +207,8 @@ def sim_run(options, simulation_options, MPC, save=False, name=None, show=True):
         ax_traj.add_patch(patch_car_traj)
         ax_traj.add_patch(patch_goal_traj)
         if save:
+            if not os.path.exists('./model-predictive-control/output'):
+                os.makedirs('./model-predictive-control/output')
             plt.savefig('./model-predictive-control/output/' +
                         simulation_options['name'] + '.png', bbox_inches='tight')
 
@@ -221,8 +223,12 @@ def sim_run(options, simulation_options, MPC, save=False, name=None, show=True):
     car_ani = animation.FuncAnimation(fig, update_plot, frames=range(
         1, len(state_i)), interval=100, repeat=True, blit=False)
     if save:
+        if not os.path.exists('./model-predictive-control/output'):
+            os.makedirs('./model-predictive-control/output')
         car_ani.save('./model-predictive-control/output/' +
                      simulation_options['name'] + '.gif')
     if show:
         plt.show()
     plot_trajectory(state_i[:, :2], save, name)
+    
+    return state_i, u_i

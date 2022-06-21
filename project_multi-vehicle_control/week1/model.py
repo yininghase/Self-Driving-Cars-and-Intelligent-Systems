@@ -38,26 +38,31 @@ class ModelPredictiveControl:
         state = np.array(args[0])
         ref = np.array(args[1])
 
-        state_history = np.array([state])
-        control_history = np.zeros((1, 2))
-        obstacle_history = np.array([np.inf])
+        if self.smooth_cost:
+            state_history = np.array([state])
+            control_history = np.zeros((1, 2))
+        
+        if self.obs_cost and len(self.obstacles) != 0:   
+            obstacle_history = np.array([np.inf])
 
         for i in range(self.horizon):
             pedal = u[2*i]
             steering = u[2*i+1]
             state = self.plant_model(state, self.dt, pedal, steering)
-            state_history = np.append(state_history, [state], axis=0)
-            control_history = np.append(
-                control_history, [u[2*i:2*i+2]], axis=0)
+            if self.smooth_cost:
+                state_history = np.append(state_history, [state], axis=0)
+                control_history = np.append(control_history, [u[2*i:2*i+2]], axis=0)
 
-            if len(self.obstacles) != 0:
+            if self.obs_cost and len(self.obstacles) != 0:
                 obstacle_dist = np.linalg.norm(
                     state[:2]-self.obstacles, axis=-1)
                 obstacle_history = np.append(obstacle_history, obstacle_dist)
 
         # target cost + obstale cost + smoothness cost (steering angle and pedal input)
-        cost = np.linalg.norm(state[:2]-ref[:2]) * self.dis_cost + np.abs(state[2]-ref[2]) * self.ang_cost \
-            + (np.sum((1/obstacle_history) * (obstacle_history < 1.5)) * self.obs_cost if len(self.obstacles) != 0 else 0) \
-            + np.mean(np.abs(control_history[1:, 1]-np.abs(control_history[:-1, 1]))) * self.smooth_cost \
-            + np.mean(np.abs(control_history[1:, 0] - np.abs(control_history[:-1, 0]))) * self.smooth_cost
+        cost = np.linalg.norm(state[:2]-ref[:2]) * self.dis_cost + np.abs(state[2]-ref[2]) * self.ang_cost
+        if self.obs_cost and len(self.obstacles) != 0:
+            cost += (np.sum((1/obstacle_history) * (obstacle_history < 1.5)) * self.obs_cost if len(self.obstacles) != 0 else 0)
+        if self.smooth_cost:
+            cost += np.mean(np.abs(control_history[1:, 1]-np.abs(control_history[:-1, 1]))) * self.smooth_cost \
+                + np.mean(np.abs(control_history[1:, 0] - np.abs(control_history[:-1, 0]))) * self.smooth_cost
         return cost

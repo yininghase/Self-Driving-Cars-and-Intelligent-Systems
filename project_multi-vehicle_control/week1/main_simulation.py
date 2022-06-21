@@ -23,8 +23,7 @@ if __name__ == '__main__':
     for index, s in enumerate(starting_positions):
         simulation_options["reference"] = s
         simulation_options["name"] = "base_{}".format(index)
-        sim_run(options, simulation_options,
-                ModelPredictiveControl, save=True, show=False)
+        _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     # obstacle simulation
     obstacles_1 = np.array([[5.0, -1.0]])
@@ -38,8 +37,7 @@ if __name__ == '__main__':
             simulation_options["obstacle_cost"] = 1
             simulation_options["name"] = "obstacles_s{}_o{}".format(
                 index, index_o)
-            sim_run(options, simulation_options,
-                    ModelPredictiveControl, save=True, show=False)
+            _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     # smoothness simulation
     simulation_options["reference"] = [10, 10, 3.14/2]
@@ -49,8 +47,7 @@ if __name__ == '__main__':
     for index, s in enumerate(smoothness_list):
         simulation_options["smoothness_cost"] = s
         simulation_options["name"] = "smoothness_{}".format(index)
-        sim_run(options, simulation_options,
-                ModelPredictiveControl, save=True, show=False)
+        _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     # random simulations 1
     simulation_options["obstacles"] = np.array(
@@ -59,14 +56,12 @@ if __name__ == '__main__':
     simulation_options["obstacle_cost"] = 1
     simulation_options["smoothness_cost"] = 1
     simulation_options["name"] = "random_1"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     simulation_options["obstacle_cost"] = 10000
     simulation_options["smoothness_cost"] = 1
     simulation_options["name"] = "random_2"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     # random simulation 2
     simulation_options["obstacles"] = np.array(
@@ -75,13 +70,11 @@ if __name__ == '__main__':
     simulation_options["obstacle_cost"] = 10000
     simulation_options["smoothness_cost"] = 10
     simulation_options["name"] = "random_3"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     simulation_options["smoothness_cost"] = 0.1
     simulation_options["name"] = "random_4"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     # random simultaion 3
     simulation_options["horizon"] = 5
@@ -91,10 +84,8 @@ if __name__ == '__main__':
     simulation_options["obstacle_cost"] = 10000
     simulation_options["smoothness_cost"] = 0.1
     simulation_options["name"] = "random_5"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
 
     simulation_options["horizon"] = 30
     simulation_options["name"] = "random_6"
-    sim_run(options, simulation_options,
-            ModelPredictiveControl, save=True, show=False)
+    _, _ = sim_run(options, simulation_options, ModelPredictiveControl, save=True, show=False)
