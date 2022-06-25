@@ -61,7 +61,7 @@ class ModelPredictiveControl:
         # target cost + obstale cost + smoothness cost (steering angle and pedal input)
         cost = np.linalg.norm(state[:2]-ref[:2]) * self.dis_cost + np.abs(state[2]-ref[2]) * self.ang_cost
         if self.obs_cost and len(self.obstacles) != 0:
-            cost += (np.sum((1/obstacle_history) * (obstacle_history < 1.5)) * self.obs_cost if len(self.obstacles) != 0 else 0)
+            cost += np.sum((1/obstacle_history) * (obstacle_history < 1.5)) * self.obs_cost
         if self.smooth_cost:
             cost += np.mean(np.abs(control_history[1:, 1]-np.abs(control_history[:-1, 1]))) * self.smooth_cost \
                 + np.mean(np.abs(control_history[1:, 0] - np.abs(control_history[:-1, 0]))) * self.smooth_cost
